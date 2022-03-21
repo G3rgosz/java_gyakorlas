@@ -1,7 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//https://www.nosalty.hu/recept/paprikas-krumpli-kolbasszal
+
 public class ConnectDatabase {
 
     private Connection conn;
