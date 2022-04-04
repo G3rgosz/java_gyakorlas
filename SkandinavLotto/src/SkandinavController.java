@@ -3,55 +3,54 @@ import java.util.Random;
 import javax.swing.JCheckBox;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.sql.SQLDataException;
 
-public class LottoController {
-
+public class SkandinavController {
+    
     private ConnectDatabase connDb;
     private Vector<Integer> numberList;
     private Vector<Integer> drawedList;
-    private Vector<Integer> chosenList;
-    private LottoForm lottoFrm;
+    private Vector<Integer> choosenList;
+    private SkandinavForm skandinavFrm;
     private int counter = 0;
 
-    public LottoController(ConnectDatabase connDb){
-        chosenList = new Vector<>();
-        drawedList = new Vector<>();
+    public SkandinavController(ConnectDatabase connDb){
+        choosenList = new Vector<>();
         numberList = new Vector<>();
+        drawedList = new Vector<>();
         this.connDb = connDb;
-        lottoFrm = new LottoForm();
-        lottoFrm.exitBtn.addActionListener(event -> exit());
-        lottoFrm.drawBtn.addActionListener(event -> drawing());
+        skandinavFrm = new SkandinavForm();
+        skandinavFrm.exitBtn.addActionListener(event -> exit());
+        skandinavFrm.drawBtn.addActionListener(event -> drawing());
         fillNumberList();
         numberCheckBoxes();
-        lottoFrm.setVisible(true);
+        skandinavFrm.setVisible(true);
     }
     private void fillNumberList(){
-        for(int i = 1; i < 91; i++){
+        for(int i = 1; i < 46; i++){
             numberList.add(i);
         }
     }
     private void numberCheckBoxes(){
-        for(Integer i = 1; i < 91; i++){
+        for(Integer i = 1; i < 46; i++){
             JCheckBox box = new JCheckBox();
-            box.setText( i.toString() );
-            lottoFrm.centerPnl.add(box);
+            box.setText(i.toString());
+            skandinavFrm.centerPnl.add(box);
             box.addItemListener(event -> {
                 JCheckBox check = (JCheckBox) event.getSource();
-                chosenList.add(Integer.parseInt(check.getText()));
+                choosenList.add(Integer.parseInt(check.getText()));
                 counter ++;
-                if(counter == 5){
-              n      lottoFrm.drawBtn.setEnabled(true);
+                if(counter == 7){
+                    skandinavFrm.drawBtn.setEnabled(true);
                 }else{
-                    lottoFrm.drawBtn.setEnabled(false);
+                    skandinavFrm.drawBtn.setEnabled(false);
                 }
             });
-        } 
+        }
     }
     private void drawing(){
-        int numbers = 90;
+        int numbers = 45;
         Random rand = new Random();
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 7; i++){
             int number = rand.nextInt(numbers) + 1;
             numberList.remove(number - 1);
             numbers --;
@@ -62,20 +61,20 @@ public class LottoController {
     }
     private void showResult(){
         Integer result = 0;
-        for(int i = 0; i < chosenList.size(); i++){
+        for(int i = 0; i < choosenList.size(); i++){
             for(int j = 0; j < drawedList.size(); j++){
-                if(chosenList.get(i) == drawedList.get(j)){
-                    result ++;
+                if(choosenList.get(i) == drawedList.get(j)){
+                    result++;
                 }
             }
         }
-        String lblValue = lottoFrm.resultLbl.getText();
-        lottoFrm.resultLbl.setText(lblValue + result.toString());
+        String lblValue = skandinavFrm.resultLbl.getText();
+        skandinavFrm.resultLbl.setText(lblValue + result.toString());
   
         for (Integer i : drawedList) {
-            String drawValue = lottoFrm.drawLbl.getText();
+            String drawValue = skandinavFrm.drawLbl.getText();
             String number = String.valueOf(i);
-            lottoFrm.drawLbl.setText(drawValue + number + " ");
+            skandinavFrm.drawLbl.setText(drawValue + number + " ");
         }
     }
     private void numbersToDatabase(){
@@ -84,7 +83,7 @@ public class LottoController {
         String sqlData = "";
         for(int i = 0; i < drawedList.size(); i++){
             if(i < (drawedList.size()-1)){
-                sqlData += String.valueOf(drawedList.get(i)) + ":";
+                sqlData += String.valueOf(drawedList.get(i) + ":");
             }else{
                 sqlData += String.valueOf(drawedList.get(i));
             }
